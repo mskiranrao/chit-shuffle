@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun shuffleWords(@Suppress("UNUSED_PARAMETER") view: View? = null) {
-        val words: HashSet<String> = getWords()
+        val words: HashSet<String> = getWords(true)
 
         words.let {
             if (words.size > 0) {
@@ -71,8 +71,30 @@ class MainActivity : AppCompatActivity() {
         binding.wordInput.editText?.setText("")
     }
 
-    private fun getWords(): HashSet<String> {
-        return HashSet(sharedPreference.getStringSet("words", HashSet<String>()) ?: HashSet())
+    private fun getWords(forShuffle: Boolean = false): HashSet<String> {
+        val wordList = HashSet<String>()
+        val wordsEntered =
+            HashSet(sharedPreference.getStringSet("words", HashSet<String>()) ?: HashSet())
+        wordList.addAll(wordsEntered)
+        
+        if (forShuffle) {
+            val multiplesOfEntries =
+                binding.noOfDuplicateSlots.editText?.text.toString().toIntOrNull()
+            val noOfEmptySlots = binding.noOfEmptySlots.editText?.text.toString().toIntOrNull()
+            if ((multiplesOfEntries ?: 0) > 1) {
+                for (i in 1..<multiplesOfEntries!!) {
+                    wordsEntered.forEach {
+                        wordList.add("$it $i")
+                    }
+                }
+            }
+            if ((noOfEmptySlots ?: 0) > 0) {
+                for (i in 1..noOfEmptySlots!!) {
+                    wordList.add(" ".repeat(i))
+                }
+            }
+        }
+        return wordList
     }
 
     private fun updateWords() {

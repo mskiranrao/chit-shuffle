@@ -4,4 +4,6 @@
     <string name="add_word">Add Word</string>
     <string name="shuffle">Shuffle</string>
     <string name="clear">Clear</string>
+    <string name="no_of_duplicate_slots">No Of Duplicate Slots</string>
+    <string name="no_of_empty_slots">No of empty slots</string>
 </resources>
